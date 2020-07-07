@@ -1,10 +1,11 @@
 #!/bin/bash
 
-systemctl stop nginx &>> nginx_security.log
+systemctl stop nginx &>> /var/log/nginx_security.log
 
 cd /etc/systemd/system
-mkdir nginx.service.d
+[ -d nginx.service.d ] || mkdir nginx.service.d
 cd nginx.service.d
+
 
 cat << . > override.conf
 [Service]
@@ -18,7 +19,7 @@ PIDFile=/run/nginx/nginx.pid
 cd /etc/nginx/
 sed -i '/pid/ s/|/run/|/run/nginx/' ngninx.conf 
 
-sudo systemctl daemmctl daemon-reload  &>> nginx_security.log
+sudo systemctl daemmctl daemon-reload  &>> /var/log/nginx_security.log
 
 cat << . >> override.conf 
 CapabilityBoundingSet=CAP_NET_BIND_SERVICE
@@ -28,10 +29,10 @@ SystemCallFiler=@system-service
 SystemCallErrorNumber=EPERM
 .
 
-systemctl daemon-reload  &>> nginx_security.log
+systemctl daemon-reload  &>> /var/log/nginx_security.log
 
-systemctl restart nginx  &| systemd-cat 
+systemctl restart nginx &>> /var/log/nginx_security.log 
 
-echo "nginx is secure" >> nginx_security.log
+echo "nginx is secure" | systemd-cat -t "service-hardening"
 
 

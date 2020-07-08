@@ -1,4 +1,6 @@
 - name: Reload NGINX
-  service:
+  service: 
     name: nginx
     state: reloaded
+    daemon_reload: yes
+  

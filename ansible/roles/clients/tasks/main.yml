@@ -3,6 +3,16 @@
     name: "{{ webserver_packages }}"
     state: latest
 
+- name: Harden service
+  copy:
+    dest: /etc/systemd/system
+    src: etc/systemd/system/nginx.service.d
+    owner: root
+    group: root  
+    mode: 0644
+  notify: 
+    - Reload NGINX
+
 - name: Add base NGINX configuration file
   copy:
     dest: /etc/nginx/nginx.conf
@@ -10,4 +20,5 @@
     owner: root
     group: root
     mode: 0644
-  notify: Reload NGINX
+  notify: 
+    - Reload NGINX

@@ -11,7 +11,7 @@
     group: root  
     mode: 0644
   notify: 
-    - Reload NGINX
+    - Reload DAEMON
 
 - name: Add base NGINX configuration file
   copy:

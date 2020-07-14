@@ -1,0 +1,11 @@
+Host VMSrv 
+	Hostname 172.20.45.150
+	User	 sm
+	IdentityFile ~/.ssh/id_VMSrv
+
+Host VMClient 
+	Hostname Uclient.lo.cal
+	User	 sm
+	IdentityFile ~/.ssh/id_VMClient
+	ProxyJump VMSrv
+	ForwardAgent yes
